@@ -1,5 +1,9 @@
 package com.company;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Fruit {
 
     public static final int TYPE_APPLE = 1;
@@ -57,11 +61,33 @@ public class Fruit {
         return weight * pricePerKg;
     }
 
-    public String getDateOfManufacture() {
-        return dateOfManufacture;
+    private static boolean isFresh(String dateOfManufacture, int expirationDate) throws Exception {
+        Date today = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateFruit = simpleDateFormat.parse(dateOfManufacture);
+        Calendar calendarToday = Calendar.getInstance();
+        calendarToday.setTime(today);
+        Calendar calendarFruit = Calendar.getInstance();
+        calendarFruit.setTime(dateFruit);
+        calendarFruit.add(Calendar.DAY_OF_MONTH, expirationDate);
+        if (calendarFruit.before(calendarToday)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public int getExpirationDate() {
-        return expirationDate;
+    public static void printFreshness(Fruit[] fruits) {
+        try {
+            for (int i = 0; i < fruits.length; i++) {
+                if (isFresh(fruits[i].dateOfManufacture, fruits[i].expirationDate)) {
+                    System.out.println("Fruit[" + (i + 1) + "] is fresh");
+                } else {
+                    System.out.println("Fruit[" + (i + 1) + "] is not fresh");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

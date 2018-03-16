@@ -1,9 +1,5 @@
 package com.company;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -61,7 +57,7 @@ public class Main {
         System.out.println("Sum: " + sumFormat + " grn.");
         System.out.println();
 
-        printFreshness(fruits);
+        Fruit.printFreshness(fruits);
     }
 
     private static void arrayToString(Fruit[] array) {
@@ -79,35 +75,5 @@ public class Main {
             System.out.println("Fruit[" + (i + 1) + "], price: " + resultFormat + " grn.");
         }
         return result;
-    }
-
-    private static boolean freshnessTest(String dateOfManufacture, int expirationDate) throws Exception {
-        Date today = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date dateFruit = simpleDateFormat.parse(dateOfManufacture);
-        Calendar calendarToday = Calendar.getInstance();
-        calendarToday.setTime(today);
-        Calendar calendarFruit = Calendar.getInstance();
-        calendarFruit.setTime(dateFruit);
-        calendarFruit.add(Calendar.DAY_OF_MONTH, expirationDate);
-        if (calendarFruit.before(calendarToday)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private static void printFreshness(Fruit[] fruits) {
-        try {
-            for (int i = 0; i < fruits.length; i++) {
-                if (freshnessTest(fruits[i].getDateOfManufacture(), fruits[i].getExpirationDate())) {
-                    System.out.println("Fruit[" + (i + 1) + "] is fresh");
-                } else {
-                    System.out.println("Fruit[" + (i + 1) + "] is not fresh");
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 }
